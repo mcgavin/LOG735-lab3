@@ -6,39 +6,36 @@ import java.util.List;
 
 import Succursale.Succursale;
 
-import Communication.Communicator;
-import Communication.ServerThread;
-
 
 public class Banque extends Thread{
 
-	private ServerThread serverThread;
-	private int total;
-	private static List<Communicator> listSuccursale;
-	private static int currentID = 0;
-	public static synchronized int getUniqueID() {
-		currentID++;
-		return currentID;
-    }
-	public static synchronized void addSurccusale(Communicator lienSucc) {
-		listSuccursale.add(lienSucc);
-		//send list succursale a tous le monde ? ou a juste 1 succur ?
-		//update total ?
-		//give unique id ?
-    }
-	
+	private ServerThreadBanque serverThread;
+	private int total = 0 ; // init total
+	private List<CommunicatorBanque> listSuccursale;
 	
 	public static void main(String[] args) throws IOException {
+		System.out.println("**** BANQUE ****");
 		Banque banque = new Banque(12045);
 		banque.start();
 	}
 	
 	public Banque(int port) throws IOException{
-		serverThread = new ServerThread(port, this);
+		listSuccursale = new ArrayList<CommunicatorBanque>();
+		serverThread = new ServerThreadBanque(port, this);
 		serverThread.start();
 	}
 	
+	public void addSurccusale(CommunicatorBanque lienSucc) {
+		listSuccursale.add(lienSucc);
+    }
+		
+	public void addTotal(int montant){
+		total +=montant;
+	}
+	
 	public void run() {
-		System.out.println("test1");
+		while(true){
+			
+		}
 	}
 }

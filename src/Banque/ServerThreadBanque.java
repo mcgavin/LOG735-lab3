@@ -1,4 +1,4 @@
-package Communication;
+package Banque;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,20 +6,20 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import Banque.Banque;
 
-public class ServerThread extends Thread{
+public class ServerThreadBanque extends Thread{
 
 	private int port;
 	private ServerSocket serverSocket;
 	private Socket connection;
 	private Banque banque;
+	private int succursaleUniqueID = 0;
 	
-	public ServerThread(Socket clientSocket){
+	public ServerThreadBanque(Socket clientSocket){
 		this.connection = clientSocket;
 	}
 	
-	public ServerThread (int port, Banque banque) throws IOException
+	public ServerThreadBanque (int port, Banque banque) throws IOException
 	{
 		this.port = port;
 		this.banque = banque;
@@ -51,9 +51,13 @@ public class ServerThread extends Thread{
 			
 			
 			//event but for client id
-			Communicator communicator = new Communicator(clientSocket, banque);
+			
+			CommunicatorBanque communicator = new CommunicatorBanque(clientSocket, banque, getSuccursaleUniqueID());
 			communicator.start();
 			banque.addSurccusale(communicator);
 		}
+	}
+	private synchronized int getSuccursaleUniqueID(){
+		return ++succursaleUniqueID;
 	}
 }
