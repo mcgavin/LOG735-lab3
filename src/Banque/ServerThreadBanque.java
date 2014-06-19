@@ -41,7 +41,7 @@ public class ServerThreadBanque extends Thread{
 
 			
 			try { 
-				clientSocket = serverSocket.accept(); 
+				clientSocket = serverSocket.accept();
 			} 
 			catch (IOException e) 
 		    { 
