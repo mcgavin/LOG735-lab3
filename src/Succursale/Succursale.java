@@ -15,18 +15,14 @@ public class Succursale extends Thread {
 	private ServerThreadSuccursale serverThread;
 	private int total;
 	private int port;
-	private static List<TunnelBanque> listSuccursale;
+	private static List<TunnelSuccursale> listSuccursale;
 	
-	private TunnelBanque communicatorBanque ;
+	private TunnelBanque tunnelBanque ;
 	
 	private int succursaleId = 0;
 
-	public static synchronized void addSurccusale(TunnelBanque lienSucc) {
-		listSuccursale.add(lienSucc);
-		//comment on gere la liste des succ POUR les succ ? difusion de la banque ou autre ????
-		//send list succursale a tous le monde ? ou a juste 1 succur ?
-		//update total ?
-		//give unique id ?
+	public static synchronized void addSurccusale(TunnelSuccursale tunnelSuccursale) {
+		listSuccursale.add(tunnelSuccursale);
     }
 	
 	
@@ -44,7 +40,7 @@ public class Succursale extends Thread {
 	 */
 	public Succursale(int montant) throws IOException{
 		
-		listSuccursale = new ArrayList<TunnelBanque>();
+		listSuccursale = new ArrayList<TunnelSuccursale>();
 		
 		this.setTotal(montant);
 		//intervale random pour port entre 5000 et 10000
@@ -54,8 +50,8 @@ public class Succursale extends Thread {
 		int BanquePort = 12045;
 		Socket s = new Socket(banqueIP, BanquePort);
 		
-		communicatorBanque = new TunnelBanque(s,this);
-		communicatorBanque.start();
+		tunnelBanque = new TunnelBanque(s,this);
+		tunnelBanque.start();
 		
 		CommandLineTool commandLine = new CommandLineTool(this);
 		commandLine.start();
@@ -95,7 +91,7 @@ public class Succursale extends Thread {
 	
 	public void envoieArgent(int succId, int argent){
 		
-		for	(TunnelBanque tunnel :  listSuccursale){
+		for	(TunnelSuccursale tunnel :  listSuccursale){
 			if(tunnel.getSuccID() == succId){
 				tunnel.envoieArgent(argent);
 			}
