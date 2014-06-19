@@ -51,9 +51,9 @@ public class ServerThreadSuccursale extends Thread{
 			
 			
 			//event but for client id
-			/*CommunicatorSuccursale communicator = new CommunicatorSuccursale(clientSocket, succursale);
-			communicator.start();
-			succursale.addSurccusale(communicator);*/
+//			CommunicatorSuccursale communicator = new CommunicatorSuccursale(clientSocket, succursale);
+//			communicator.start();
+//			succursale.addSurccusale(communicator);
 		}
 	}
 }

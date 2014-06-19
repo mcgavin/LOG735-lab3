@@ -2,6 +2,7 @@ package Succursale;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,13 +15,13 @@ public class Succursale extends Thread {
 	private ServerThreadSuccursale serverThread;
 	private int total;
 	private int port;
-	private static List<CommunicatorSuccursale> listSuccursale;
+	private static List<TunnelBanque> listSuccursale;
 	
-	private CommunicatorSuccursale communicatorBanque ;
+	private TunnelBanque communicatorBanque ;
 	
 	private int succursaleId = 0;
 
-	public static synchronized void addSurccusale(CommunicatorSuccursale lienSucc) {
+	public static synchronized void addSurccusale(TunnelBanque lienSucc) {
 		listSuccursale.add(lienSucc);
 		//comment on gere la liste des succ POUR les succ ? difusion de la banque ou autre ????
 		//send list succursale a tous le monde ? ou a juste 1 succur ?
@@ -42,6 +43,9 @@ public class Succursale extends Thread {
 	 * @throws IOException
 	 */
 	public Succursale(int montant) throws IOException{
+		
+		listSuccursale = new ArrayList<TunnelBanque>();
+		
 		this.setTotal(montant);
 		//intervale random pour port entre 5000 et 10000
 		this.port = (int) (5000 + (Math.random()* (10000-5000)));
@@ -50,9 +54,11 @@ public class Succursale extends Thread {
 		int BanquePort = 12045;
 		Socket s = new Socket(banqueIP, BanquePort);
 		
-		communicatorBanque = new CommunicatorSuccursale(s,this);
+		communicatorBanque = new TunnelBanque(s,this);
 		communicatorBanque.start();
 		
+		CommandLineTool commandLine = new CommandLineTool(this);
+		commandLine.start();
 		
 		serverThread = new ServerThreadSuccursale(port, this);
 		serverThread.start();
@@ -61,6 +67,7 @@ public class Succursale extends Thread {
 	
 	
 	public void run() {
+		
 	}
 
 
@@ -86,4 +93,13 @@ public class Succursale extends Thread {
 		return this.port;
 	}
 	
+	public void envoieArgent(int succId, int argent){
+		
+		for	(TunnelBanque tunnel :  listSuccursale){
+			if(tunnel.getSuccID() == succId){
+				tunnel.envoieArgent(argent);
+			}
+			
+		}
+	}
 }
