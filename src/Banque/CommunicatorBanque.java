@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 
 public class CommunicatorBanque extends Thread {
@@ -47,11 +48,16 @@ public class CommunicatorBanque extends Thread {
 			
 			System.out.println("j<ai recu " + montant);
 			
+			System.out.println(succPort+"-succursaleID");
 			oos.writeObject("Ton id est : "+succursaleID);
+			ArrayList listSucc = new ArrayList();
 			for(int i = 0 ;i<banque.getListSucc().size()-1;i++){
-				oos.writeObject("Liste banque :"+banque.getListSucc().get(i).getSuccursaleID()+"-"+banque.getListSucc().get(i).getSuccPort());
-				
+				listSucc.add(banque.getListSucc().get(i).getSuccursaleID()+"-"+banque.getListSucc().get(i).getSuccPort());
 			}
+			
+			System.out.println(succPort+"-liste Succ");
+			oos.writeObject(listSucc);
+			
 			while(true){
 
 				String leMessage;
