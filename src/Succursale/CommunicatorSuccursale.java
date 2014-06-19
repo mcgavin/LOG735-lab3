@@ -49,8 +49,9 @@ public class CommunicatorSuccursale extends Thread {
 			System.out.println("mon ID est "+ succursale.getSuccursaleId());
 			//ois.clear();
 			//succursale.((Integer) ois.readObject());
-			//sending montant
+			//Envoit des info à la banque
 			oos.writeObject(succursale.getTotal());
+			oos.writeObject(succursale.getPort());
 			while(true){
 				System.out.println(ois.readObject());
 			}

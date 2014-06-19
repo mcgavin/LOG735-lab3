@@ -3,6 +3,7 @@ package Succursale;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
+import java.util.Random;
 
 import Banque.Banque;
 import Banque.CommunicatorBanque;
@@ -12,7 +13,7 @@ public class Succursale extends Thread {
 
 	private ServerThreadSuccursale serverThread;
 	private int total;
-	//private int port = 12046;
+	private int port;
 	private static List<CommunicatorSuccursale> listSuccursale;
 	
 	private CommunicatorSuccursale communicatorBanque ;
@@ -30,7 +31,7 @@ public class Succursale extends Thread {
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println("**** SUCCURSALLE ****");
-		Succursale succursale = new Succursale(12046, 1000);
+		Succursale succursale = new Succursale(1000);
 		succursale.start();
 	}
 	
@@ -40,10 +41,10 @@ public class Succursale extends Thread {
 	 * @param montant
 	 * @throws IOException
 	 */
-	public Succursale(int port, int montant) throws IOException{
+	public Succursale(int montant) throws IOException{
 		this.setTotal(montant);
-		serverThread = new ServerThreadSuccursale(port, this);
-		serverThread.start();
+		//intervale random pour port entre 5000 et 10000
+		this.port = (int) (5000 + (Math.random()* (10000-5000)));
 		
 		String banqueIP = "127.0.0.1";
 		int BanquePort = 12045;
@@ -52,6 +53,9 @@ public class Succursale extends Thread {
 		communicatorBanque = new CommunicatorSuccursale(s,this);
 		communicatorBanque.start();
 		
+		
+		serverThread = new ServerThreadSuccursale(port, this);
+		serverThread.start();
 	}
 	
 	
@@ -74,9 +78,12 @@ public class Succursale extends Thread {
 		this.total = total;
 	}
 
-
 	public int getTotal() {
-		return total;
+		return this.total;
+	}
+	
+	public int getPort() {
+		return this.port;
 	}
 	
 }

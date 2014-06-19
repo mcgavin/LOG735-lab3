@@ -12,6 +12,7 @@ public class CommunicatorBanque extends Thread {
 	private ObjectInputStream ois;
 	private int succursaleID;
 	private Banque banque;
+	private int succPort;
 
 	public CommunicatorBanque(Socket clientSocket, Banque banque, int succursaleID){
 
@@ -40,15 +41,15 @@ public class CommunicatorBanque extends Thread {
 			//recevoir montant
 			System.out.println("recevoir montant");
 			int montant  = (Integer) ois.readObject();
+			succPort  = (Integer) ois.readObject();
 			
 			banque.addTotal(montant);
+			
 			System.out.println("j<ai recu " + montant);
 			
 			oos.writeObject("Ton id est : "+succursaleID);
 			for(int i = 0 ;i<banque.getListSucc().size();i++){
-				int port = 12045;
-				port += banque.getListSucc().get(i).getSuccursaleID();
-				oos.writeObject("Liste banque : "+banque.getListSucc().get(i).getSuccursaleID()+"-"+port);
+				oos.writeObject("Liste banque : "+banque.getListSucc().get(i).getSuccursaleID()+"-"+banque.getListSucc().get(i).getSuccPort());
 				
 			}
 			while(true){
@@ -66,5 +67,9 @@ public class CommunicatorBanque extends Thread {
 
 	public int getSuccursaleID(){
 		return succursaleID;
+	}
+	
+	public int getSuccPort(){
+		return succPort;
 	}
 }
