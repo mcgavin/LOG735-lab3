@@ -12,6 +12,7 @@ public class Succursale extends Thread {
 
 	private ServerThreadSuccursale serverThread;
 	private int total;
+	//private int port = 12046;
 	private static List<CommunicatorSuccursale> listSuccursale;
 	
 	private CommunicatorSuccursale communicatorBanque ;
@@ -29,7 +30,7 @@ public class Succursale extends Thread {
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println("**** SUCCURSALLE ****");
-		Succursale succursale = new Succursale(12046, 1000);
+		Succursale succursale = new Succursale(12047, 1000);
 		succursale.start();
 	}
 	

@@ -12,12 +12,14 @@ public class CommunicatorBanque extends Thread {
 	private ObjectInputStream ois;
 	private int succursaleID;
 	private Banque banque;
+	private int port;
 
 	public CommunicatorBanque(Socket clientSocket, Banque banque, int succursaleID){
 
 		try {
 			this.succursaleID =succursaleID;
 			this.banque = banque;
+			port = 124506;
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 		}
@@ -41,12 +43,14 @@ public class CommunicatorBanque extends Thread {
 			System.out.println("recevoir montant");
 			int montant  = (Integer) ois.readObject();
 			
-			
 			banque.addTotal(montant);
 			System.out.println("j<ai recu " + montant);
-		
 			
-			oos.writeObject("Ton id est : 1");
+			oos.writeObject("Ton id est : "+succursaleID);
+			for(int i = 0 ;i<banque.getListSucc().size();i++){
+				oos.writeObject("Liste banque : "+banque.getListSucc().get(i).getSuccursaleID()+"-"+banque.getListSucc().get(i).getPort());
+				
+			}
 			while(true){
 
 				String leMessage;
@@ -60,4 +64,12 @@ public class CommunicatorBanque extends Thread {
 		}
 	}
 
+	public int getSuccursaleID(){
+		return succursaleID;
+	}
+	
+	public int getPort(){
+		return port;
+		
+	}
 }

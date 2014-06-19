@@ -47,9 +47,13 @@ public class CommunicatorSuccursale extends Thread {
 			
 			succursale.setSuccursaleId((Integer) ois.readObject());
 			System.out.println("mon ID est "+ succursale.getSuccursaleId());
-			
+			//ois.clear();
+			//succursale.((Integer) ois.readObject());
 			//sending montant
 			oos.writeObject(succursale.getTotal());
+			while(true){
+				System.out.println(ois.readObject());
+			}
 			
 			
 		} catch (Exception e) {

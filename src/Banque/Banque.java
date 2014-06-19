@@ -33,6 +33,9 @@ public class Banque extends Thread{
 		total +=montant;
 	}
 	
+	public List<CommunicatorBanque> getListSucc(){
+		return listSuccursale;
+	}
 	public void run() {
 		while(true){
 			

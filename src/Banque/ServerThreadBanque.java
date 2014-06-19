@@ -57,6 +57,7 @@ public class ServerThreadBanque extends Thread{
 			banque.addSurccusale(communicator);
 		}
 	}
+	
 	private synchronized int getSuccursaleUniqueID(){
 		return ++succursaleUniqueID;
 	}
