@@ -48,8 +48,8 @@ public class CommunicatorBanque extends Thread {
 			System.out.println("j<ai recu " + montant);
 			
 			oos.writeObject("Ton id est : "+succursaleID);
-			for(int i = 0 ;i<banque.getListSucc().size();i++){
-				oos.writeObject("Liste banque : "+banque.getListSucc().get(i).getSuccursaleID()+"-"+banque.getListSucc().get(i).getSuccPort());
+			for(int i = 0 ;i<banque.getListSucc().size()-1;i++){
+				oos.writeObject("Liste banque :"+banque.getListSucc().get(i).getSuccursaleID()+"-"+banque.getListSucc().get(i).getSuccPort());
 				
 			}
 			while(true){

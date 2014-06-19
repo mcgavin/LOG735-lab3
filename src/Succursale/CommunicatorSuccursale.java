@@ -11,6 +11,7 @@ public class CommunicatorSuccursale extends Thread {
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 	private Succursale succursale;
+	private int succID;
 	
 	public CommunicatorSuccursale(Socket clientSocket, Succursale succursale){
 		
@@ -54,6 +55,18 @@ public class CommunicatorSuccursale extends Thread {
 			oos.writeObject(succursale.getPort());
 			while(true){
 				System.out.println(ois.readObject());
+				String message = (String) ois.readObject();
+				System.out.println(message);
+				if(message.startsWith("Liste banque :")){
+					
+					int id = Integer.parseInt((message.substring(message.indexOf(":")+1, message.indexOf("-"))));
+					int port = Integer.parseInt((message.substring(message.indexOf("-")+1)));
+					Socket s = new Socket("127.0.0.1", port);
+					
+					CommunicatorSuccursale communicatorSucc = new CommunicatorSuccursale(s,succursale);
+					succursale.addSurccusale(communicatorSucc);
+					communicatorSucc.start();
+				}
 			}
 			
 			

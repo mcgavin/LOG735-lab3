@@ -41,6 +41,7 @@ public class ServerThreadSuccursale extends Thread{
 			
 			try { 
 				clientSocket = serverSocket.accept(); 
+				System.out.println("Accept de " + port + " reussi.");
 			} 
 			catch (IOException e) 
 		    { 
