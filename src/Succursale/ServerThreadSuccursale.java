@@ -30,10 +30,10 @@ public class ServerThreadSuccursale extends Thread{
         } 
 		catch (IOException e) 
         { 
-			System.err.println("On ne peut pas Ècouter au  port: " + Integer.toString(port) + "."); 
+			System.err.println("On ne peut pas √©couter au port: " + Integer.toString(port) + "."); 
 			System.exit(1); 
         }
-		System.out.println ("Le serveur " + port + " est en marche, Attente de la connexion.....");
+		System.out.println ("Le serveur est en marche, √©coute au port " + port + ", Attente de la connexion.....");
 		while(true) {
 			Socket clientSocket = null; 
 			
@@ -41,11 +41,11 @@ public class ServerThreadSuccursale extends Thread{
 			
 			try { 
 				clientSocket = serverSocket.accept(); 
-				System.out.println("Accept de " + clientSocket.getPort() + " reussi.");
+				System.out.println("Connection r√©ussi, port : " + clientSocket.getPort());
 			} 
 			catch (IOException e) 
 		    { 
-				System.err.println("refus de " + clientSocket.getPort() + " a ÈchouÈ."); 
+				System.err.println("Connection √©chou√©, port : " + clientSocket.getPort()); 
 				System.exit(1); 
 		    } 
 			

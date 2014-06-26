@@ -31,7 +31,7 @@ public class TunnelBanque extends Thread {
 		//read and write stuff here ?
 		
 		//stuff pour la banque
-		System.out.println("allo banque");
+		System.out.println("Connection a la banque");
 		try {
 			
 			//la banque nous envoie notre ID
@@ -42,7 +42,7 @@ public class TunnelBanque extends Thread {
 			//ois.clear();
 			//succursale.((Integer) ois.readObject());
 			
-			//Envoit des info à la banque
+			//Envoit des info ï¿½ la banque
 			oos.writeObject(succursaleLocal.getTotal());
 			oos.writeObject(succursaleLocal.getPort());
 			

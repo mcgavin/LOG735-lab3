@@ -3,6 +3,7 @@ package Succursale;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -53,11 +54,11 @@ public class Succursale extends Thread {
 		tunnelBanque = new TunnelBanque(s,this);
 		tunnelBanque.start();
 		
-		CommandLineTool commandLine = new CommandLineTool(this);
-		commandLine.start();
-		
 		serverThread = new ServerThreadSuccursale(port, this);
 		serverThread.start();
+		
+		CommandLineTool commandLine = new CommandLineTool(this);
+		commandLine.start();
 	}
 	
 	
@@ -85,17 +86,46 @@ public class Succursale extends Thread {
 		return this.total;
 	}
 	
+	public void addArgent(int argent){
+		this.total += argent;
+	}
+	
+	
 	public int getPort() {
 		return this.port;
 	}
 	
-	public void envoieArgent(int succId, int argent){
+	public boolean envoieArgent(int succId, int argent){
+		
+		boolean transfer = false;
 		
 		for	(TunnelSuccursale tunnel :  listSuccursale){
 			if(tunnel.getSuccID() == succId){
+				transfer = true;
+				total -= argent;
 				tunnel.envoieArgent(argent);
 			}
-			
 		}
+		
+		return transfer;
 	}
+	
+	public String printAllTunnel(){
+		
+		String output = "";
+		for (TunnelSuccursale tunnel : listSuccursale) {
+			
+			//TODO add money to tunnel print
+			output += "\n"+ this.getSuccursaleId() + " -> "+tunnel.getSuccID()+" | money : ";
+			
+		
+		}
+		return output;
+	}
+	
 }
+
+
+
+
+
