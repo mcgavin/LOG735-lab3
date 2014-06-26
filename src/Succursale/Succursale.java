@@ -28,7 +28,7 @@ public class Succursale extends Thread {
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println("**** SUCCURSALLE ****");
-		Succursale succursale = new Succursale(1000);
+		Succursale succursale = new Succursale(((int)(Math.random() * (5-1)) + 1)*1000);
 		succursale.start();
 	}
 	

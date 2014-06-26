@@ -46,16 +46,15 @@ public class CommunicatorBanque extends Thread {
 			
 			banque.addTotal(montant);
 			
-			System.out.println("j<ai recu " + montant);
+			System.out.println("La banque "+succursaleID+" a :" + montant);
+			System.out.println("La somme total dans le reseau est: " + banque.getTotal());
 			
-			System.out.println(succPort+"-succursaleID");
-			oos.writeObject("Ton id est : "+succursaleID);
-			ArrayList listSucc = new ArrayList();
+			//oos.writeObject("Ton id est : "+succursaleID);
+			ArrayList<String> listSucc = new ArrayList();
 			for(int i = 0 ;i<banque.getListSucc().size()-1;i++){
-				listSucc.add(banque.getListSucc().get(i).getSuccursaleID()+"-"+banque.getListSucc().get(i).getSuccPort());
+				listSucc.add(""+banque.getListSucc().get(i).getSuccursaleID()+"-"+banque.getListSucc().get(i).getSuccPort());
+				//System.out.println(listSucc.get(i));
 			}
-			
-			System.out.println(succPort+"-liste Succ");
 			oos.writeObject(listSucc);
 			
 			while(true){

@@ -30,7 +30,7 @@ public class Banque extends Thread{
     }
 		
 	public void addTotal(int montant){
-		total +=montant;
+		setTotal(getTotal() + montant);
 	}
 	
 	public List<CommunicatorBanque> getListSucc(){
@@ -40,5 +40,13 @@ public class Banque extends Thread{
 		while(true){
 			
 		}
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
 	}
 }

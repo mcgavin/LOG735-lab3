@@ -12,16 +12,16 @@ public class ServerThreadSuccursale extends Thread{
 	private int port;
 	private ServerSocket serverSocket;
 	private Socket connection;
-	private Succursale succursale;
+	private Succursale succursaleLocal;
 	
 	public ServerThreadSuccursale(Socket clientSocket){
 		this.connection = clientSocket;
 	}
 	
-	public ServerThreadSuccursale (int port, Succursale succursale) throws IOException
+	public ServerThreadSuccursale (int port, Succursale succursaleLocal) throws IOException
 	{
 		this.port = port;
-		this.succursale = succursale;
+		this.succursaleLocal = succursaleLocal;
 	}
 	
 	public void run() {
@@ -33,23 +33,28 @@ public class ServerThreadSuccursale extends Thread{
 			System.err.println("On ne peut pas écouter au  port: " + Integer.toString(port) + "."); 
 			System.exit(1); 
         }
-		
+		System.out.println ("Le serveur " + port + " est en marche, Attente de la connexion.....");
 		while(true) {
 			Socket clientSocket = null; 
-			System.out.println ("Le serveur " + port + " est en marche, Attente de la connexion.....");
+			
 
 			
 			try { 
 				clientSocket = serverSocket.accept(); 
-				System.out.println("Accept de " + port + " reussi.");
+				System.out.println("Accept de " + clientSocket.getPort() + " reussi.");
 			} 
 			catch (IOException e) 
 		    { 
-				System.err.println("Accept de " + port + " a échoué."); 
+				System.err.println("refus de " + clientSocket.getPort() + " a échoué."); 
 				System.exit(1); 
 		    } 
 			
-			
+			TunnelSuccursale tunnelSuccursale = new TunnelSuccursale(clientSocket,succursaleLocal);
+			//System.out.println(2);
+			succursaleLocal.addSurccusale(tunnelSuccursale);
+			//System.out.println(3);
+			tunnelSuccursale.start();
+			//System.out.println(4);
 			//event but for client id
 //			CommunicatorSuccursale communicator = new CommunicatorSuccursale(clientSocket, succursale);
 //			communicator.start();

@@ -27,7 +27,13 @@ public class TunnelSuccursale extends Thread{
 	public void run(){
 		
 		try{
-			
+			while(true){
+				
+				if(ois.readObject().toString().startsWith("Chandy")){
+					
+					
+				}else{}
+			}
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

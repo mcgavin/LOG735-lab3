@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 
 public class TunnelBanque extends Thread {
@@ -18,6 +19,7 @@ public class TunnelBanque extends Thread {
 		try {
 			this.succursaleLocal = succursaleLocal;
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
+			
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 		}
 		catch(IOException ioe) {
@@ -49,9 +51,18 @@ public class TunnelBanque extends Thread {
 			//Creer un tunnel vers toute les succursales de la liste
 			//communiquer le ID
 			//ajouter toute les succursales a la liste de succursale de LocalSuccusale ( succursaleLocal.addSucc())
+			ArrayList<String> listSucc = (ArrayList<String>) ois.readObject();
 			
+			for(int i=0;i<listSucc.size();i++){
+				System.out.println(listSucc.get(i).substring(listSucc.get(i).indexOf("-")+1));
+				Socket s = new Socket("127.0.0.1", Integer.parseInt((listSucc.get(i).substring(listSucc.get(i).indexOf("-")+1))));
+				TunnelSuccursale tunnelSuccursale = new TunnelSuccursale(s,succursaleLocal);
+				tunnelSuccursale.setSuccID( Integer.parseInt(listSucc.get(i).substring(0,listSucc.get(i).indexOf("-"))));
+				succursaleLocal.addSurccusale(tunnelSuccursale);
+				tunnelSuccursale.start();
+			}
 			while(true){
-				System.out.println(ois.readObject());
+				/*System.out.println(ois.readObject());
 				String message = (String) ois.readObject();
 				System.out.println(message);
 				if(message.startsWith("Liste banque :")){
@@ -63,7 +74,7 @@ public class TunnelBanque extends Thread {
 //					TunnelSuccursale tunnelSuccursale = new TunnelSuccursale(s,succursaleLocal);
 //					succursaleLocal.addSurccusale(tunnelSuccursale);
 //					tunnelSuccursale.start();
-				}
+				}*/
 			}
 			
 			//stuff pour succ
