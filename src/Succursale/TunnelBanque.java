@@ -52,14 +52,15 @@ public class TunnelBanque extends Thread {
 			//communiquer le ID
 			//ajouter toute les succursales a la liste de succursale de LocalSuccusale ( succursaleLocal.addSucc())
 			ArrayList<String> listSucc = (ArrayList<String>) ois.readObject();
-			
+			System.out.println("liste des succursale" );
 			for(int i=0;i<listSucc.size();i++){
-				System.out.println(listSucc.get(i).substring(listSucc.get(i).indexOf("-")+1));
+				//System.out.println("la succursale "+succursaleLocal.getSuccursaleId()+" est connecte a :"+listSucc.get(i).substring(0,listSucc.get(i).indexOf("-")));
 				Socket s = new Socket("127.0.0.1", Integer.parseInt((listSucc.get(i).substring(listSucc.get(i).indexOf("-")+1))));
 				TunnelSuccursale tunnelSuccursale = new TunnelSuccursale(s,succursaleLocal);
 				tunnelSuccursale.setSuccID( Integer.parseInt(listSucc.get(i).substring(0,listSucc.get(i).indexOf("-"))));
 				succursaleLocal.addSurccusale(tunnelSuccursale);
 				tunnelSuccursale.start();
+				//tunnelSuccursale.sendSuccID();
 			}
 			while(true){
 				/*System.out.println(ois.readObject());

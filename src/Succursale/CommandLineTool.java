@@ -62,7 +62,7 @@ public class CommandLineTool extends Thread {
 //				System.out.println("the command is : "+command);
 				//sucursalle.runcommand();
 
-			} catch (IOException ioe) {
+			} catch (IOException | NumberFormatException | InterruptedException ioe) {
 				System.out.println("IO error trying to read your command!");
 			}
 		}

@@ -29,7 +29,7 @@ public class Succursale extends Thread {
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println("**** SUCCURSALLE ****");
-		Succursale succursale = new Succursale(((int)(Math.random() * (5-1)) + 1)*1000);
+		Succursale succursale = new Succursale(((int)(Math.random() * (8)) + 2)*1000);
 		succursale.start();
 	}
 	
@@ -59,6 +59,11 @@ public class Succursale extends Thread {
 		
 		CommandLineTool commandLine = new CommandLineTool(this);
 		commandLine.start();
+		
+		TransfertAuto transfertAuto = new TransfertAuto(this);
+		transfertAuto.start();
+		
+		
 	}
 	
 	
@@ -95,15 +100,24 @@ public class Succursale extends Thread {
 		return this.port;
 	}
 	
-	public boolean envoieArgent(int succId, int argent){
+	public boolean envoieArgent(int succId, int argent) throws InterruptedException{
 		
 		boolean transfer = false;
 		
 		for	(TunnelSuccursale tunnel :  listSuccursale){
 			if(tunnel.getSuccID() == succId){
-				transfer = true;
-				total -= argent;
-				tunnel.envoieArgent(argent);
+				if(argent<=this.getTotal()){
+					transfer = true;
+					System.out.println("retrait de "+argent+ " dans "+succursaleId);
+					total -= argent;
+					
+					System.out.println("envoie de "+argent+ " de "+succursaleId+" vers "+succId);
+					tunnel.envoieArgent(argent);
+					System.out.println("solde de "+succursaleId+" : "+total);
+				}else{
+					System.out.println("Fond insuffisant dans "+succursaleId+",solde: "+total);
+					transfer = false;
+				}
 			}
 		}
 		
@@ -123,6 +137,10 @@ public class Succursale extends Thread {
 		return output;
 	}
 	
+	public List<TunnelSuccursale> getListSuccursale(){
+		return listSuccursale;
+		
+	}
 }
 
 

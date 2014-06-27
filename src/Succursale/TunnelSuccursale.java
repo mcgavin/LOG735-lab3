@@ -47,26 +47,26 @@ public class TunnelSuccursale extends Thread{
 		if(succID == 0 ){
 			writeList.add("getID");
 		}
-		
 
-
-			
 	}
 	
-	public void envoieArgent(int argent){
-		System.out.println("envoie de "+argent+ "| "+succursaleLocal.getSuccursaleId()+" -> "+this.getSuccID());
+	public void envoieArgent(int argent) throws InterruptedException{
 		
+		this.sleep(5000);
 		writeList.add("transfer:"+argent);
+			
 	}
 
 	public void recoisArgent(int argent){
 		System.out.println("TODO Implement it.. : recois de "+argent+ "| "+this.getSuccID() +" -> "+ succursaleLocal.getSuccursaleId());
-		
 		succursaleLocal.addArgent(argent);
+		System.out.println("Solde de"+succursaleLocal.getSuccursaleId()+" : "+succursaleLocal.getTotal());
+		
 	}
 	
 	public void setSuccID(int succID) {
 		this.succID = succID;
+		System.out.println("la banque "+succursaleLocal.getSuccursaleId()+" est connecte a : "+this.getSuccID());
 	}
 
 	public int getSuccID() {
@@ -99,6 +99,7 @@ public class TunnelSuccursale extends Thread{
 			while(true){
 				if (!stringToWrite.isEmpty()){
 					try {
+						System.out.println(stringToWrite.get(0));
 						oos.writeObject(stringToWrite.get(0));
 						stringToWrite.remove(0);
 					} catch (IOException e) {

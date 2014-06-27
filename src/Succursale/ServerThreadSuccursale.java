@@ -50,7 +50,6 @@ public class ServerThreadSuccursale extends Thread{
 		    } 
 			
 			TunnelSuccursale tunnelSuccursale = new TunnelSuccursale(clientSocket,succursaleLocal);
-			//System.out.println(2);
 			succursaleLocal.addSurccusale(tunnelSuccursale);
 			//System.out.println(3);
 			tunnelSuccursale.start();
