@@ -36,46 +36,74 @@ public class CommandLineTool extends Thread {
 				String[] commandArg = command.split(" ");
 				
 				if(commandArg[0].equals("chandy")){
+				
+				}else if(commandArg[0].equals("erreur")){
+					int argent = Integer.parseInt(commandArg[1]);
+					if(this.succursale.enleveArgent(argent)){
+						System.out.println("!!!! Erreur introduite !!!!");
+					}else{
+						System.out.println("erreur en introduisant l'erreur");
+					};
 					
-				}else if(commandArg[0].equals("printID")){
-					System.out.println("\nMy id is : "+succursale.getSuccursaleId()+"\n");
-					
-				}else if(commandArg[0].equals("printSuccList")){
-					
-					System.out.println(succursale.printAllTunnel());
 					
 				}else if(commandArg[0].equals("envoie")){
+					// EXIGENCE SUCCURSALE-06
+					// parametre valider dans envoie argent
 					
-					if (succursale.envoieArgent(Integer.parseInt(commandArg[1]), Integer.parseInt(commandArg[2]))){
-						System.out.println("transfer effectuer");;
+					try{
+						int succID = Integer.parseInt(commandArg[1]);
+						int montantArgent = Integer.parseInt(commandArg[2]);
+						
+						if (succursale.envoieArgent(succID, montantArgent)){
+							System.out.println("transfer effectuer");
+						}else{
+							System.out.println("Erreur de transaction");
+						}
+						
+					}catch(NumberFormatException e ){
+						System.out.println("Mauvais argument");
 					}
 					
-				}else if(commandArg[0].equals("help")){
-					printHelp();
-				}else if(commandArg[0].equals("printMontant")){
-					
-					System.out.println(succursale.getTotal());
-					
+				//print Function
+				}else if(commandArg[0].equals("print")){
+					if(commandArg[1].equals("help")||commandArg[1].equals("aide")){
+						printHelp();
+						
+					}else if(commandArg[1].equals("id") 	|| commandArg[1].equals("ID")){
+						System.out.println("\nMy id is : "+succursale.getSuccursaleId()+"\n");
+						
+					}else if(commandArg[1].equals("montant")|| commandArg[1].equals("argent")){
+						System.out.println("total is : "+succursale.getTotal());
+						
+					}else if(commandArg[1].equals("list") 	|| commandArg[1].equals("tunnel")){
+						System.out.println(succursale.printAllTunnel());
+					}else{
+						printHelp();
+					}
+			
 				}else{
-					System.out.println("erreur commande Inconnue");
+					System.out.println("erreur commande inconnue");
 					printHelp();
 				}
-				//interprete command
-//				System.out.println("the command is : "+command);
-				//sucursalle.runcommand();
 
-			} catch (IOException | NumberFormatException | InterruptedException ioe) {
-				System.out.println("IO error trying to read your command!");
+			} catch (Exception e) {
+				System.out.println("error trying to read your command!");
 			}
 		}
 	}
 	
 	public void printHelp(){
 		System.out.println("Commande de la Succursale\n" +
-				"printID                    : print le Id de la succursale presente\n" +
-				"printSuccList              : print toute les connections vers les autres succursales\n" +
-				"envoie %succ% %montant%    : envoie le %montant%( un entier ) a la succursale %succ% (entier )\n" +
-				"printMontant               : print le montant de la succursale\n" +
-				"chandy						: Demarre chandy-lamport");
+				"~~ COMMANDE ~~\n"+
+				"chandy                     : Demarre chandy-lamport\n"+
+				"envoie %succ% %montant%    : envoie le %montant% a la succursale %succ% (entier )\n" +
+				"erreur %montant%           : introduit un erreur en enlevant le montant a la succursale\n"+
+				"\n"+
+				"~~ INFORMATION ~~\n"+
+				"print help/aide            : print l'aide\n"+
+				"print ID/id                : print le Id de la succursale presente\n"+
+				"print montant/argent       : print l'argent succursale presente\n"+
+				"print list/tunnel          : print toute les connections vers les autres succursales\n" 
+				);
 	}
 }

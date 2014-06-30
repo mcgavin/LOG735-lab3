@@ -30,7 +30,9 @@ public class Succursale extends Thread {
 	public static void main(String[] args) throws IOException {
 		System.out.println("**** SUCCURSALLE ****");
 		Succursale succursale = new Succursale(((int)(Math.random() * (8)) + 2)*1000);
-		succursale.start();
+		
+		//run is empty
+//		succursale.start();
 		
 	}
 	
@@ -52,15 +54,20 @@ public class Succursale extends Thread {
 		int BanquePort = 12045;
 		Socket s = new Socket(banqueIP, BanquePort);
 		
+		
+		//connection a la banque
 		tunnelBanque = new TunnelBanque(s,this);
 		tunnelBanque.start();
 		
+		//thread qui ecoute les connection entrante
 		serverThread = new ServerThreadSuccursale(port, this);
 		serverThread.start();
 		
+		//thread pour ecrire des commande dans le terminal
 		CommandLineTool commandLine = new CommandLineTool(this);
 		commandLine.start();
 		
+		//thread de transfer d'argent automatique
 		TransfertAuto transfertAuto = new TransfertAuto(this);
 		transfertAuto.start();
 		
@@ -89,11 +96,21 @@ public class Succursale extends Thread {
 	}
 
 	public int getTotal() {
-		return this.total;
+		return total;
 	}
 	
 	public void addArgent(int argent){
 		this.total += argent;
+	}
+	
+	public boolean enleveArgent(int argent){
+		boolean b = false;
+		
+		if (total-argent>0){
+			this.total -= argent;
+			b =true;
+		}
+		return b;
 	}
 	
 	
@@ -101,7 +118,7 @@ public class Succursale extends Thread {
 		return this.port;
 	}
 	
-	public boolean envoieArgent(int succId, int argent) throws InterruptedException{
+	public boolean envoieArgent(int succId, int argent) {
 		
 		boolean transfer = false;
 		
@@ -133,7 +150,6 @@ public class Succursale extends Thread {
 			//TODO add money to tunnel print
 			output += "\n"+ this.getSuccursaleId() + " -> "+tunnel.getSuccID()+" | money : ";
 			
-		
 		}
 		return output;
 	}

@@ -25,6 +25,7 @@ public class ServerThreadSuccursale extends Thread{
 	}
 	
 	public void run() {
+		
 		try { 
 			serverSocket = new ServerSocket(port); 
         } 
@@ -33,11 +34,10 @@ public class ServerThreadSuccursale extends Thread{
 			System.err.println("On ne peut pas écouter au port: " + Integer.toString(port) + "."); 
 			System.exit(1); 
         }
+		
 		System.out.println ("Le serveur est en marche, écoute au port " + port + ", Attente de la connexion.....");
 		while(true) {
 			Socket clientSocket = null; 
-			
-
 			
 			try { 
 				clientSocket = serverSocket.accept(); 
@@ -51,13 +51,11 @@ public class ServerThreadSuccursale extends Thread{
 			
 			TunnelSuccursale tunnelSuccursale = new TunnelSuccursale(clientSocket,succursaleLocal);
 			succursaleLocal.addSurccusale(tunnelSuccursale);
-			//System.out.println(3);
+			
+			//exigence SUCCURSALE-04
+			succursaleLocal.printAllTunnel();
+
 			tunnelSuccursale.start();
-			//System.out.println(4);
-			//event but for client id
-//			CommunicatorSuccursale communicator = new CommunicatorSuccursale(clientSocket, succursale);
-//			communicator.start();
-//			succursale.addSurccusale(communicator);
 		}
 	}
 }

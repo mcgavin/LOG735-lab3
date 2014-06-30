@@ -3,6 +3,7 @@ package Succursale;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 public class TransfertAuto extends Thread {
 
@@ -14,17 +15,23 @@ public class TransfertAuto extends Thread {
 	}
 	
 	public void run(){
-		//  prompt the user to enter their name
-		//  read the username from the command-line; need to use try/catch with the
-		//  readLine() method
+
 		while(true){
 			
 			try {
-				this.sleep(((int)(Math.random() * (5)) + 5)*1000);
+				Thread.sleep(((int)((Math.random()) * (5)) + 5)*1000);
 				
-				if(succursaleLocal.getListSuccursale().size()!=0){
-					int idSuccEnvoie = succursaleLocal.getListSuccursale().get(((int) (Math.round(Math.random() * succursaleLocal.getListSuccursale().size())))).getSuccID();
-					System.out.println(idSuccEnvoie);
+				//EXIGENCE SUCCURSALE-05
+				
+				//if there is more than 1 succ and the local one has money
+				if(succursaleLocal.getListSuccursale().size()!=0 && succursaleLocal.getTotal() > 0){
+
+					Random random =new Random();
+					
+					int index = random.nextInt(succursaleLocal.getListSuccursale().size());
+					
+					int idSuccEnvoie = succursaleLocal.getListSuccursale().get(index).getSuccID();
+					
 					int argent = (int) (Math.round(Math.random()*(succursaleLocal.getTotal()/100))*100);
 					succursaleLocal.envoieArgent(idSuccEnvoie, argent);	
 				}else{

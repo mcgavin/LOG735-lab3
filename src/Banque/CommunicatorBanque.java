@@ -14,12 +14,14 @@ public class CommunicatorBanque extends Thread {
 	private int succursaleID;
 	private Banque banque;
 	private int succPort;
+	private String succIP;
 
 	public CommunicatorBanque(Socket clientSocket, Banque banque, int succursaleID){
 
 		try {
 			this.succursaleID =succursaleID;
 			this.banque = banque;
+			this.succIP = clientSocket.getInetAddress().toString().replace("/", "");
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 		}
@@ -32,8 +34,7 @@ public class CommunicatorBanque extends Thread {
 		try {
 			
 		
-			//read and write stuff here 
-			
+			//exigence BANQUE-02 et BANQUE-03 et BANQUE	-04
 			//send ID
 			System.out.println("sending ID");
 
@@ -46,13 +47,14 @@ public class CommunicatorBanque extends Thread {
 			
 			banque.addTotal(montant);
 			
-			System.out.println("La banque "+succursaleID+" a :" + montant);
+			//exigence BANQUE-05
+			System.out.println("La succursale "+succursaleID+" a :" + montant);
 			System.out.println("La somme total dans le reseau est: " + banque.getTotal());
 			
 			//oos.writeObject("Ton id est : "+succursaleID);
 			ArrayList<String> listSucc = new ArrayList();
 			for(int i = 0 ;i<banque.getListSucc().size()-1;i++){
-				listSucc.add(""+banque.getListSucc().get(i).getSuccursaleID()+"-"+banque.getListSucc().get(i).getSuccPort());
+				listSucc.add(""+banque.getListSucc().get(i).getSuccursaleID()+"-"+succIP+"-"+banque.getListSucc().get(i).getSuccPort());
 				//System.out.println(listSucc.get(i));
 			}
 			oos.writeObject(listSucc);
@@ -76,5 +78,8 @@ public class CommunicatorBanque extends Thread {
 	
 	public int getSuccPort(){
 		return succPort;
+	}
+	public String getSuccIP(){
+		return succIP;
 	}
 }

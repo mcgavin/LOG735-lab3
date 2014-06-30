@@ -31,7 +31,7 @@ public class ServerThreadBanque extends Thread{
         } 
 		catch (IOException e) 
         { 
-			System.err.println("On ne peut pas écouter au  port: " + Integer.toString(port) + "."); 
+			System.err.println("On ne peut pas ï¿½couter au  port: " + Integer.toString(port) + "."); 
 			System.exit(1); 
         }
 		
@@ -45,13 +45,13 @@ public class ServerThreadBanque extends Thread{
 			} 
 			catch (IOException e) 
 		    { 
-				System.err.println("Accept de " + port + " a échoué."); 
+				System.err.println("Accept de " + port + " a echouer."); 
 				System.exit(1); 
 		    } 
 			
 			
 			//event but for client id
-			
+			// EXIGENCE BANQUE - 01 et BANQUE - 06 (unique ID)
 			CommunicatorBanque communicator = new CommunicatorBanque(clientSocket, banque, getSuccursaleUniqueID());
 			communicator.start();
 			banque.addSurccusale(communicator);
