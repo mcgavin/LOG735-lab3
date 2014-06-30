@@ -31,6 +31,7 @@ public class Succursale extends Thread {
 		System.out.println("**** SUCCURSALLE ****");
 		Succursale succursale = new Succursale(((int)(Math.random() * (8)) + 2)*1000);
 		succursale.start();
+		
 	}
 	
 	/**
@@ -40,7 +41,7 @@ public class Succursale extends Thread {
 	 * @throws IOException
 	 */
 	public Succursale(int montant) throws IOException{
-		
+		System.out.println("solde : "+montant);
 		listSuccursale = new ArrayList<TunnelSuccursale>();
 		
 		this.setTotal(montant);

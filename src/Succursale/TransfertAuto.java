@@ -21,8 +21,10 @@ public class TransfertAuto extends Thread {
 			
 			try {
 				this.sleep(((int)(Math.random() * (5)) + 5)*1000);
+				
 				if(succursaleLocal.getListSuccursale().size()!=0){
-					int idSuccEnvoie = (int) Math.round(Math.random() * succursaleLocal.getListSuccursale().size());
+					int idSuccEnvoie = succursaleLocal.getListSuccursale().get(((int) (Math.round(Math.random() * succursaleLocal.getListSuccursale().size())))).getSuccID();
+					System.out.println(idSuccEnvoie);
 					int argent = (int) (Math.round(Math.random()*(succursaleLocal.getTotal()/100))*100);
 					succursaleLocal.envoieArgent(idSuccEnvoie, argent);	
 				}else{

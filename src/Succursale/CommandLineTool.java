@@ -35,7 +35,9 @@ public class CommandLineTool extends Thread {
 				command = br.readLine(); 
 				String[] commandArg = command.split(" ");
 				
-				if(commandArg[0].equals("printID")){
+				if(commandArg[0].equals("chandy")){
+					
+				}else if(commandArg[0].equals("printID")){
 					System.out.println("\nMy id is : "+succursale.getSuccursaleId()+"\n");
 					
 				}else if(commandArg[0].equals("printSuccList")){
@@ -73,6 +75,7 @@ public class CommandLineTool extends Thread {
 				"printID                    : print le Id de la succursale presente\n" +
 				"printSuccList              : print toute les connections vers les autres succursales\n" +
 				"envoie %succ% %montant%    : envoie le %montant%( un entier ) a la succursale %succ% (entier )\n" +
-				"printMontant               : print le montant de la succursale");
+				"printMontant               : print le montant de la succursale\n" +
+				"chandy						: Demarre chandy-lamport");
 	}
 }

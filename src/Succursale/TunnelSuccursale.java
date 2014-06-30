@@ -77,6 +77,9 @@ public class TunnelSuccursale extends Thread{
 		writeList.add("succID:"+succursaleLocal.getSuccursaleId());
 	}
 	
+	public void sendMessage(String message){
+		writeList.add(message);
+	}
 }
 
 	class socketWriter implements Runnable{
