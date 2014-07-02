@@ -2,28 +2,31 @@ package Succursale;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Chandy {
 
 	private int id;
 	private int etatSucc;
-	private ChandySucc chandySucc;
+	private int banqueValue;
+	private Map<Integer, ChandySucc> mapChandySucc;
 	
-	public Chandy(int id, int etatSucc, int nbSucc){
+	public Chandy(int id, int etatSucc, List<TunnelSuccursale> listSuccursale){
 		this.id = id;
 		this.etatSucc = etatSucc;
-		for(int i = 0;i<=nbSucc;i++){
-			//listEtat.add(-1);
+		this.mapChandySucc = new HashMap<Integer, ChandySucc>();
+		System.out.println(listSuccursale.size());
+		HashMap<Integer, Canal> listCanauxMontant = new HashMap<Integer, Canal>();
+		for(int i = 0;i<listSuccursale.size();i++){
+			listCanauxMontant.put(listSuccursale.get(i).getSuccID(), new Canal(0, true));
+		}
+		mapChandySucc.put(id, new ChandySucc(id, etatSucc, listCanauxMontant));
+		for(int i = 0;i<listSuccursale.size();i++){
+			mapChandySucc.put(listSuccursale.get(i).getSuccID(), new ChandySucc());
 		}
 	}
 	
-	public void initCanaux(){
-		
-//		for(int i = 0;i<listEtat.size();i++){
-//			
-//		}
-	}
 	
 	public int getId() {
 		return id;
@@ -41,11 +44,29 @@ public class Chandy {
 		this.etatSucc = etatSucc;
 	}
 
-//	public Map<Integer, Integer> getCanaux() {
-//		return canaux;
-//	}
+	public ChandySucc getChandySucc(int mapKey){
+		return mapChandySucc.get(mapKey);
+	}
 
-	public void setCanaux(Map<Integer, Integer> canaux) {
-//		this.canaux = canaux;
+	public ChandySucc getMe(){
+		return mapChandySucc.get(id);
+	}
+	public boolean isComplete(){
+		
+		for (Integer mapKey : mapChandySucc.keySet()) {
+			if(mapChandySucc.get(mapKey).isComplete()){
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	public void printchandy() {
+		for (Integer mapKey : mapChandySucc.keySet()) {
+			mapChandySucc.get(mapKey).printSucc();
+				
+		}
+		
 	}
 }

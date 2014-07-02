@@ -17,12 +17,9 @@ public class Succursale extends Thread {
 	private int total;
 	private int port;
 	
-	//chandy-lamport add
-	private boolean chandyActif= false;
-	private ChandyGestion gestionnaireChandyLamport;
-	
-	
-	
+
+	private ChandyGestion chandyGestion;
+	private ChandyStarter chandyStarter;
 	private static List<TunnelSuccursale> listSuccursale;
 	
 	private TunnelBanque tunnelBanque ;
@@ -78,7 +75,11 @@ public class Succursale extends Thread {
 		TransfertAuto transfertAuto = new TransfertAuto(this);
 		transfertAuto.start();
 		
+		chandyGestion = new ChandyGestion(this);
+		chandyGestion.start();
 		
+		chandyStarter = new ChandyStarter(this);
+		chandyStarter.start();
 	}
 	
 	
@@ -108,10 +109,6 @@ public class Succursale extends Thread {
 	
 	public void addArgent(int argent, int succid){
 		
-		if (chandyActif){
-//	XXX		gestionnaireChandyLamport.function(succid,argent);
-		}
-		
 		this.total += argent;
 	}
 	
@@ -119,7 +116,7 @@ public class Succursale extends Thread {
 	 * envoie des message au gestionnaire de chandy-lamport
 	 */
 	public void notifyChandyGestionnaire(String message){
-//		gestionnaireChandyLamport.message(message);
+		chandyGestion.addMessage(message);
 	}
 	
 	/**
@@ -136,6 +133,7 @@ public class Succursale extends Thread {
 		
 		for	(TunnelSuccursale tunnel :  listSuccursale){
 			if(tunnel.getSuccID() == succId){
+				System.out.println("chandy:"+message);
 				tunnel.sendMessage("chandy:"+message);
 			}
 		}
@@ -154,13 +152,12 @@ public class Succursale extends Thread {
 	public void envoieChandyMessageToAll(String message){
 		
 		for	(TunnelSuccursale tunnel :  listSuccursale){
+			System.out.println("chandy:"+message);
 			tunnel.sendMessage("chandy:"+message);
 		}
 	}
 	
-	
-	
-	
+
 	public boolean enleveArgent(int argent){
 		boolean b = false;
 		
@@ -214,6 +211,32 @@ public class Succursale extends Thread {
 	
 	public List<TunnelSuccursale> getListSuccursale(){
 		return listSuccursale;
+		
+	}
+	
+	public void record(){
+		for(int i=0;i<listSuccursale.size();i++){
+			listSuccursale.get(i).setRecord(true);
+			
+		}
+	}
+	
+	public void stopRecord(int succID){
+		
+		for(int i=0;i<listSuccursale.size();i++){
+			if(listSuccursale.get(i).getSuccID()==succID){
+				listSuccursale.get(i).setRecord(false);
+			}
+			
+		}
+	}
+
+
+	public void startChandy() {
+		if(listSuccursale.size()!=0){
+			chandyGestion.chandyStart();
+		}
+		
 		
 	}
 }

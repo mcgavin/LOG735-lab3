@@ -16,12 +16,13 @@ public class TunnelSuccursale extends Thread{
 	//instance of the initiator
 	private Succursale succursaleLocal;
 	private int succID;
+	private boolean record;
 	
 	public TunnelSuccursale(Socket clientSocket, Succursale succursaleLocal){
 		
 		try {
 			this.succursaleLocal = succursaleLocal;
-					
+			setRecord(false);		
 			writeList = new syncedWriteList();
 			
 			outputTread = new socketWriter(clientSocket,writeList );
@@ -70,6 +71,10 @@ public class TunnelSuccursale extends Thread{
 	}
 
 	public void recoisArgent(int argent){
+		if(isRecord()){
+			System.out.println("incremente canal");
+			chandyMessage("transfert-"+argent+"-"+succID);
+		}
 		System.out.println("recois de "+argent+ "| "+this.getSuccID() +" -> "+ succursaleLocal.getSuccursaleId());
 		succursaleLocal.addArgent(argent,this.getSuccID() );
 		System.out.println("Solde de "+succursaleLocal.getSuccursaleId()+" : "+succursaleLocal.getTotal());
@@ -95,7 +100,15 @@ public class TunnelSuccursale extends Thread{
 	
 	public void chandyMessage(String message){
 		
-		this.succursaleLocal.notifyChandyGestionnaire(message);
+		this.succursaleLocal.notifyChandyGestionnaire(message+"-"+succID);
+	}
+
+	public boolean isRecord() {
+		return record;
+	}
+
+	public void setRecord(boolean record) {
+		this.record = record;
 	}
 	
 	
@@ -125,11 +138,18 @@ public class TunnelSuccursale extends Thread{
 		public void run() {
 			//write whats in the list
 			while(true){
+				
 				if (!stringToWrite.isEmpty()){
 					try {
+						if(stringToWrite.get(0).contains("transfert")){
+							Thread.sleep(5000);
+						}
 						oos.writeObject(stringToWrite.get(0));
 						stringToWrite.remove(0);
 					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -171,7 +191,7 @@ public class TunnelSuccursale extends Thread{
 					if (event.startsWith("chandy")){
 						String[] message = event.split(":");
 						
-						(this.tunnel).chandyMessage(message[2]);
+						tunnel.chandyMessage(message[1]);
 						
 					}else if(event.startsWith("transfer:")){
 						//money transfer

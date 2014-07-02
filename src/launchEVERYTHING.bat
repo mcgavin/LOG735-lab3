@@ -2,8 +2,7 @@
 
 
 REM compile les .java
-javac Banque/Banque.java
-javac Succursale/Succursale.java
+
 
 
 REM part la Banque
