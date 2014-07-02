@@ -7,9 +7,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class TunnelSuccursale extends Thread{
-
-//	private ObjectOutputStream oos;
-//	private ObjectInputStream ois;
 	
 	private socketWriter outputTread;
 	private socketListener inputTread;
@@ -68,15 +65,13 @@ public class TunnelSuccursale extends Thread{
 	
 	public void envoieArgent(int argent) {
 		
-		//XXX pourquoi un Thread.sleep??
-//		Thread.sleep(5000);
 		writeList.add("transfer:"+argent);
 			
 	}
 
 	public void recoisArgent(int argent){
 		System.out.println("recois de "+argent+ "| "+this.getSuccID() +" -> "+ succursaleLocal.getSuccursaleId());
-		succursaleLocal.addArgent(argent);
+		succursaleLocal.addArgent(argent,this.getSuccID() );
 		System.out.println("Solde de "+succursaleLocal.getSuccursaleId()+" : "+succursaleLocal.getTotal());
 		
 	}
@@ -97,6 +92,13 @@ public class TunnelSuccursale extends Thread{
 	public void sendMessage(String message){
 		writeList.add(message);
 	}
+	
+	public void chandyMessage(String message){
+		
+		this.succursaleLocal.notifyChandyGestionnaire(message);
+	}
+	
+	
 }
 
 	/**
@@ -167,7 +169,9 @@ public class TunnelSuccursale extends Thread{
 					String event = ois.readObject().toString();
 					
 					if (event.startsWith("chandy")){
-						//execute chandy
+						String[] message = event.split(":");
+						
+						(this.tunnel).chandyMessage(message[2]);
 						
 					}else if(event.startsWith("transfer:")){
 						//money transfer

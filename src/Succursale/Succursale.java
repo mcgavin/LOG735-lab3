@@ -16,6 +16,13 @@ public class Succursale extends Thread {
 	private ServerThreadSuccursale serverThread;
 	private int total;
 	private int port;
+	
+	//chandy-lamport add
+	private boolean chandyActif= false;
+	private ChandyGestion gestionnaireChandyLamport;
+	
+	
+	
 	private static List<TunnelSuccursale> listSuccursale;
 	
 	private TunnelBanque tunnelBanque ;
@@ -99,9 +106,60 @@ public class Succursale extends Thread {
 		return total;
 	}
 	
-	public void addArgent(int argent){
+	public void addArgent(int argent, int succid){
+		
+		if (chandyActif){
+//	XXX		gestionnaireChandyLamport.function(succid,argent);
+		}
+		
 		this.total += argent;
 	}
+	
+	/**
+	 * envoie des message au gestionnaire de chandy-lamport
+	 */
+	public void notifyChandyGestionnaire(String message){
+//		gestionnaireChandyLamport.message(message);
+	}
+	
+	/**
+	 * envoie des message de type chandy a la succuraslle selectionner
+	 * 
+	 * ajoute chandy au message
+	 * 
+	 * chandy:+message
+	 * 
+	 * @param message
+	 * @param succID
+	 */
+	public void envoieChandyMessage(String message, int succId){
+		
+		for	(TunnelSuccursale tunnel :  listSuccursale){
+			if(tunnel.getSuccID() == succId){
+				tunnel.sendMessage("chandy:"+message);
+			}
+		}
+	}
+	
+	/**
+	 * envoie des messages de type chandy a toutes les succursales
+	 * 
+	 * ajoute chandy au message
+	 * 
+	 * chandy:+message
+	 * 
+	 * @param message
+	 * @param succID
+	 */
+	public void envoieChandyMessageToAll(String message){
+		
+		for	(TunnelSuccursale tunnel :  listSuccursale){
+			tunnel.sendMessage("chandy:"+message);
+		}
+	}
+	
+	
+	
 	
 	public boolean enleveArgent(int argent){
 		boolean b = false;
