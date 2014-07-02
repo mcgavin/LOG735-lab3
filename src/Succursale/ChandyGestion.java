@@ -82,7 +82,6 @@ public class ChandyGestion extends Thread {
 			}else{
 				listCanauxMontant.put(succursale.getListSuccursale().get(i).getSuccID(), new Canal(0, true));
 			}
-			
 		}
 		mapChandyMe.put(SuccIDStarter, new ChandySucc(succursale.getSuccursaleId(), succursale.getTotal(), listCanauxMontant));
 	}
@@ -108,6 +107,7 @@ public class ChandyGestion extends Thread {
 							System.out.println("creation d'un chandyMe");
 							createMyChandySucc(sid,Integer.parseInt(chandyString[2]));
 							succursale.envoieChandyMessageToAll("M-"+sid);
+							checkComplete(Integer.parseInt(chandyString[2]));
 						}
 						
 						
