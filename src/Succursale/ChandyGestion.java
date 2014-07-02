@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChandyGestion extends Thread {
 
@@ -11,21 +13,40 @@ public class ChandyGestion extends Thread {
 	private boolean chandy;
 	private syncedWriteList chandyEvent;
 	
+	private int SuccIDStarter;
+	private Map<Integer, Chandy> mapChandy;
 	
 	public ChandyGestion(Succursale succursale){
 		this.succursale = succursale;
 		this.chandy = true;
 		this.chandyEvent = new syncedWriteList();
-		
+		this.mapChandy = new HashMap<Integer, Chandy>();
 	}
 	
+
+	/**
+	 * 
+	 */
 	public void endChandy(){
 
 		succursale.envoieChandyMessageToAll("end-"+succursale.getSuccursaleId() );
 
 		chandy=false;
 	}
+
+
 	
+	public void createChandy(int SuccIDStarter){
+		
+		//TODO
+		mapChandy.put(SuccIDStarter, new Chandy(SuccIDStarter, SuccIDStarter, SuccIDStarter));
+	}
+	
+	public void startChandy(int SuccID){
+		SuccIDStarter = SuccID;
+		
+	}
+
 	
 	public void run(){
 

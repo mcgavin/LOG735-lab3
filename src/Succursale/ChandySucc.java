@@ -8,6 +8,7 @@ public class ChandySucc {
 	private int id;
 	private int etat;
 	private HashMap<Integer, Integer> listCanauxMontant = new HashMap();
+
 	private ArrayList<Integer> listCanaux = new ArrayList();
 	
 	public ChandySucc(int id, int etat, int listcanaux){
@@ -34,5 +35,5 @@ public class ChandySucc {
 		return string;
 		
 	}
-	
+
 }
