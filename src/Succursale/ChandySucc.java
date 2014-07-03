@@ -18,7 +18,6 @@ public class ChandySucc {
 		this.id = id;
 		this.etat = etat;
 		this.listCanauxMontant = listCanauxMontant;
-		printSucc();
 	}
 	
 	public void stopRecord(int canal){
@@ -41,9 +40,14 @@ public class ChandySucc {
 		return string;
 		
 	}
-
+	public int getEtat(){
+		return etat;
+	}
 	public void setEtat(int etat){
 		this.etat = etat;
+	}
+	public HashMap<Integer, Canal>  getCanal(){
+		return listCanauxMontant;
 	}
 	public void setCanal(HashMap<Integer, Canal> listCanauxMontant){
 		this.listCanauxMontant = listCanauxMontant;
@@ -51,20 +55,10 @@ public class ChandySucc {
 	public boolean isComplete(){
 		
 		for (Integer mapKey : listCanauxMontant.keySet()) {
-			System.out.println(mapKey+"--"+listCanauxMontant.get(mapKey).isRecord());
 			if(listCanauxMontant.get(mapKey).isRecord()){
 				return false;
 			}
 		}
 		return true;
-	}
-	public void printSucc() {
-		System.out.println("etat de la succursale : "+id);
-		System.out.println("etat : "+etat);
-		for (Integer mapKey : listCanauxMontant.keySet()) {
-			System.out.println("dans le canal "+mapKey+" il y a :"+listCanauxMontant.get(mapKey).getFlux());
-	
-		}
-		
 	}
 }

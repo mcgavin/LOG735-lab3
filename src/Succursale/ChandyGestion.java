@@ -35,9 +35,7 @@ public class ChandyGestion extends Thread {
 	public void ajouterArgent(int argent, int canal){
 		for (Integer mapKey : mapChandyMe.keySet()) {
 			mapChandyMe.get(mapKey).ajouterArgent(argent, canal);
-			if(mapChandyMe.get(mapKey).isComplete()){
-				mapChandyMe.get(mapKey).printSucc();
-			}
+
 		}
 	}
 	
@@ -47,30 +45,21 @@ public class ChandyGestion extends Thread {
 		checkComplete(succID);
 	}
 	public void checkChandyComplete(){
-		System.out.println("renvoie:"+chandy.isComplete());
 		if(chandy.isComplete()){
-			System.out.println("\n\n\n ****************  Victoire   ********************* \n\n\n");
-			this.succursale.getBanqueTotal();
-			
-			
-			chandy.printchandy();
+			chandy.printchandy(succursale.getBanqueTotal());
 			chandyRun = false;
 		}
 	}
 	
 	public void checkComplete(int succID){
-		System.out.println("renvoie:"+mapChandyMe.get(succID).isComplete());
 		if(mapChandyMe.get(succID).isComplete()){
 				succursale.envoieChandyMessage(mapChandyMe.get(succID).toString(), succID);
-				System.out.println("competer:"+mapChandyMe.get(succID).toString());
 				mapChandyMe.remove(succID);		
 		}
 	}
 	
 	public void chandyStart(){		
 		if(!chandyRun){
-			System.out.println("demarage de chandy");
-			
 			chandy = new Chandy(succursale.getSuccursaleId(), succursale.getTotal(), succursale.getListSuccursale());
 			succursale.envoieChandyMessageToAll("M-"+succursale.getSuccursaleId());
 			chandyRun = true;
@@ -98,7 +87,6 @@ public class ChandyGestion extends Thread {
 			try {
 
 				if (! (chandyEvent.isEmpty()) ){
-					System.out.println("recoit-"+chandyEvent.get(0));
 					String[] chandyString = chandyEvent.get(0).split("-");
 					int sid = 0;
 					if(chandyString[0].equals("M")){
@@ -113,7 +101,6 @@ public class ChandyGestion extends Thread {
 							stopRecord(sid,Integer.parseInt(chandyString[2]));	
 							
 						}else{
-							System.out.println("creation d'un chandyMe");
 							createMyChandySucc(sid,Integer.parseInt(chandyString[2]));
 							succursale.envoieChandyMessageToAll("M-"+sid);
 							checkComplete(Integer.parseInt(chandyString[2]));
@@ -122,7 +109,6 @@ public class ChandyGestion extends Thread {
 						
 						//Etat global d'une succursale distante 
 					}else if(chandyString[0].equals("etat")){
-						System.out.println(chandyEvent.get(0));
 						int succid = Integer.parseInt(chandyString[1]);
 						int montant = Integer.parseInt(chandyString[2]);
 						HashMap<Integer, Canal> listCanauxMontant = new HashMap<Integer, Canal>();
@@ -130,7 +116,6 @@ public class ChandyGestion extends Thread {
 						String canaux[] = chandyString[3].split("/");
 						
 						for (int i=0;i<canaux.length;i=i+2) {
-							System.out.println(canaux[i]);
 							listCanauxMontant.put(Integer.parseInt(canaux[i]), new Canal(Integer.parseInt(canaux[i+1]),false));
 						}
 						chandy.setChandySucc(succid,montant,listCanauxMontant);

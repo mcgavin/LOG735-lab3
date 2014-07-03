@@ -137,7 +137,6 @@ public class Succursale extends Thread {
 		
 		for	(TunnelSuccursale tunnel :  listSuccursale){
 			if(tunnel.getSuccID() == succId){
-				System.out.println("chandy:"+message);
 				tunnel.sendMessage("chandy:"+message);
 			}
 		}
@@ -156,7 +155,6 @@ public class Succursale extends Thread {
 	public void envoieChandyMessageToAll(String message){
 		
 		for	(TunnelSuccursale tunnel :  listSuccursale){
-			System.out.println("chandy:"+message);
 			tunnel.sendMessage("chandy:"+message);
 		}
 	}
