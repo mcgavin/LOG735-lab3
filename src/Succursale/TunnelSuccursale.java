@@ -142,14 +142,11 @@ public class TunnelSuccursale extends Thread{
 				if (!stringToWrite.isEmpty()){
 					try {
 						if(stringToWrite.get(0).contains("transfert")){
-							Thread.sleep(5000);
+							//Thread.sleep(5000);
 						}
 						oos.writeObject(stringToWrite.get(0));
 						stringToWrite.remove(0);
 					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

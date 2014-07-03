@@ -47,6 +47,7 @@ public class ChandyGestion extends Thread {
 		checkComplete(succID);
 	}
 	public void checkChandyComplete(){
+		System.out.println("renvoie:"+chandy.isComplete());
 		if(chandy.isComplete()){
 			System.out.println("\n\n\n ****************  Victoire   ********************* \n\n\n");
 			this.succursale.getBanqueTotal();
@@ -56,12 +57,13 @@ public class ChandyGestion extends Thread {
 			chandyRun = false;
 		}
 	}
+	
 	public void checkComplete(int succID){
+		System.out.println("renvoie:"+mapChandyMe.get(succID).isComplete());
 		if(mapChandyMe.get(succID).isComplete()){
 				succursale.envoieChandyMessage(mapChandyMe.get(succID).toString(), succID);
 				System.out.println("competer:"+mapChandyMe.get(succID).toString());
-				mapChandyMe.remove(succID);
-				
+				mapChandyMe.remove(succID);		
 		}
 	}
 	
@@ -96,7 +98,7 @@ public class ChandyGestion extends Thread {
 			try {
 
 				if (! (chandyEvent.isEmpty()) ){
-					System.out.println(chandyEvent.get(0));
+					System.out.println("recoit-"+chandyEvent.get(0));
 					String[] chandyString = chandyEvent.get(0).split("-");
 					int sid = 0;
 					if(chandyString[0].equals("M")){
@@ -129,12 +131,7 @@ public class ChandyGestion extends Thread {
 						
 						for (int i=0;i<canaux.length;i=i+2) {
 							System.out.println(canaux[i]);
-							/*String[] canalInfo =  canaux[i].split("+");
-							System.out.println(canalInfo[0]);
-							System.out.println(canalInfo[1]);*/
 							listCanauxMontant.put(Integer.parseInt(canaux[i]), new Canal(Integer.parseInt(canaux[i+1]),false));
-							//canal canalInfo[0] -> succid = canalInfo[1]
-							//succdistant vers succlocal : montant
 						}
 						chandy.setChandySucc(succid,montant,listCanauxMontant);
 						checkChandyComplete();
@@ -145,7 +142,6 @@ public class ChandyGestion extends Thread {
 						int montant = Integer.parseInt(chandyString[1]);
 						int canal = Integer.parseInt(chandyString[2]);
 						ajouterArgent(montant,canal);
-						
 					}
 					chandyEvent.remove(0);
 				}

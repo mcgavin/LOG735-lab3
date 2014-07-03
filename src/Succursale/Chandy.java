@@ -23,7 +23,7 @@ public class Chandy {
 		}
 		mapChandySucc.put(id, new ChandySucc(id, etatSucc, listCanauxMontant));
 		for(int i = 0;i<listSuccursale.size();i++){
-			mapChandySucc.put(listSuccursale.get(i).getSuccID(), new ChandySucc());
+			mapChandySucc.put(listSuccursale.get(i).getSuccID(), new ChandySucc(id));
 		}
 	}
 	
@@ -52,9 +52,9 @@ public class Chandy {
 		return mapChandySucc.get(id);
 	}
 	public boolean isComplete(){
-		
 		for (Integer mapKey : mapChandySucc.keySet()) {
-			if(mapChandySucc.get(mapKey).isComplete()){
+			System.out.println("succ: "+mapKey);
+			if(!mapChandySucc.get(mapKey).isComplete()){
 				return false;
 			}
 		}

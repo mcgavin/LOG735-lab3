@@ -9,8 +9,10 @@ public class ChandySucc {
 	private int etat;
 	private HashMap<Integer, Canal> listCanauxMontant = new HashMap<Integer, Canal>();
 
-	public ChandySucc(){
-		listCanauxMontant.put(0, new Canal(0,true));
+	public ChandySucc(int id){
+		this.id=id;
+		this.etat=0;
+		listCanauxMontant.put(id, new Canal(0,true));
 	}
 	public ChandySucc(int id, int etat, HashMap<Integer, Canal> listCanauxMontant){
 		this.id = id;
@@ -49,6 +51,7 @@ public class ChandySucc {
 	public boolean isComplete(){
 		
 		for (Integer mapKey : listCanauxMontant.keySet()) {
+			System.out.println(mapKey+"--"+listCanauxMontant.get(mapKey).isRecord());
 			if(listCanauxMontant.get(mapKey).isRecord()){
 				return false;
 			}
