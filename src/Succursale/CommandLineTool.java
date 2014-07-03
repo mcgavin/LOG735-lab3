@@ -37,6 +37,8 @@ public class CommandLineTool extends Thread {
 				
 				if(commandArg[0].equals("chandy")){
 				
+					succursale.startChandy();
+				
 				}else if(commandArg[0].equals("erreur")){
 					int argent = Integer.parseInt(commandArg[1]);
 					if(this.succursale.enleveArgent(argent)){
