@@ -69,4 +69,11 @@ public class Chandy {
 		}
 		
 	}
+
+
+	public void setChandySucc(int succid, int montant,HashMap<Integer, Canal> listCanauxMontant) {
+		mapChandySucc.get(succid).setEtat(montant);
+		mapChandySucc.get(succid).setCanal(listCanauxMontant);
+		
+	}
 }

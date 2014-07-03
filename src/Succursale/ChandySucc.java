@@ -31,15 +31,21 @@ public class ChandySucc {
 		String string = "" ;
 		
 		string+= "etat-"+id+"-"+etat+"-";
-		
-		for (int i = 0; i < listCanauxMontant.size(); i++) {
-			string+= i+"."+listCanauxMontant.get(i)+"|";
+		for (Integer mapKey : listCanauxMontant.keySet()) {
+				string+= mapKey+"/"+listCanauxMontant.get(mapKey).getFlux()+"/";
+			
 		}
 		
 		return string;
 		
 	}
 
+	public void setEtat(int etat){
+		this.etat = etat;
+	}
+	public void setCanal(HashMap<Integer, Canal> listCanauxMontant){
+		this.listCanauxMontant = listCanauxMontant;
+	}
 	public boolean isComplete(){
 		
 		for (Integer mapKey : listCanauxMontant.keySet()) {

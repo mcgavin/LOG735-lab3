@@ -116,18 +116,21 @@ public class ChandyGestion extends Thread {
 						System.out.println(chandyEvent.get(0));
 						int succid = Integer.parseInt(chandyString[1]);
 						int montant = Integer.parseInt(chandyString[2]);
-						
-						
+						HashMap<Integer, Canal> listCanauxMontant = new HashMap<Integer, Canal>();
 						//list of idFrom.montant
-						String canaux[] = chandyString[3].split("|");
+						String canaux[] = chandyString[3].split("/");
 						
-						for (String canal : canaux) {
-							String[] canalInfo =  canal.split(".");
+						for (int i=0;i<canaux.length;i=i+2) {
+							System.out.println(canaux[i]);
+							/*String[] canalInfo =  canaux[i].split("+");
+							System.out.println(canalInfo[0]);
+							System.out.println(canalInfo[1]);*/
+							listCanauxMontant.put(Integer.parseInt(canaux[i]), new Canal(Integer.parseInt(canaux[i+1]),false));
 							//canal canalInfo[0] -> succid = canalInfo[1]
-							//      succdistant vers succlocal : montant
+							//succdistant vers succlocal : montant
 						}
-						
-						
+						chandy.setChandySucc(succid,montant,listCanauxMontant);
+						checkChandyComplete();
 					}else if(chandyString[0].equals("end")){
 						int montant = Integer.parseInt(chandyString[2]);
 					}else if(chandyString[0].equals("transfert")){
