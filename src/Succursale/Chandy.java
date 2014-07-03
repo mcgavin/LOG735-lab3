@@ -71,6 +71,9 @@ public class Chandy {
 				somme = somme + mapChandySucc.get(mapKey).getCanal().get(mapKey2).getFlux();
 			}
 		}
+		System.out.println("Somme connue par la Banque : "+sommeBanque);
+		System.out.println("Somme détectée par la capture :"+somme);
+		System.out.println("ÉTAT GLOBAL COHÉRENT ");
 		if(somme==sommeBanque){
 			System.out.println("ÉTAT GLOBAL COHÉRENT ");
 		}else{
