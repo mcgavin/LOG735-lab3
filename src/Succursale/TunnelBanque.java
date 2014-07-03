@@ -11,7 +11,14 @@ public class TunnelBanque extends Thread {
 
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
+	private ArrayList<String> listeMessage;
+	
+	private int total=0;
+	private boolean totalLock = true;
+	
+	
 	private Succursale succursaleLocal;
+	
 	private int succID;
 	
 	public TunnelBanque(Socket clientSocket, Succursale succursaleLocal){
@@ -19,8 +26,9 @@ public class TunnelBanque extends Thread {
 		try {
 			this.succursaleLocal = succursaleLocal;
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
-			
 			ois = new ObjectInputStream(clientSocket.getInputStream());
+			
+			listeMessage = new ArrayList<String>();
 		}
 		catch(IOException ioe) {
 			ioe.printStackTrace();
@@ -67,22 +75,16 @@ public class TunnelBanque extends Thread {
 			}
 			
 			while(true){
-				/*System.out.println(ois.readObject());
-				String message = (String) ois.readObject();
-				System.out.println(message);
-				if(message.startsWith("Liste banque :")){
-					
-					int id = Integer.parseInt((message.substring(message.indexOf(":")+1, message.indexOf("-"))));
-					int port = Integer.parseInt((message.substring(message.indexOf("-")+1)));
-					Socket s = new Socket("127.0.0.1", port);
-					
-//					TunnelSuccursale tunnelSuccursale = new TunnelSuccursale(s,succursaleLocal);
-//					succursaleLocal.addSurccusale(tunnelSuccursale);
-//					tunnelSuccursale.start();
-				}*/
+				
+				if(!(listeMessage.isEmpty()) ){
+					oos.writeObject(listeMessage.get(0));
+					listeMessage.remove(0);
+					total = (int)ois.readObject();
+					totalLock = false;
+				}
+				
 			}
-			
-			//stuff pour succ
+
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -90,10 +92,20 @@ public class TunnelBanque extends Thread {
 		}
 	}
 	
-	public void envoieArgent(int argent){
-		System.out.println();
+	public int getBanqueTotal() {
+		
+		listeMessage.add("requeteTotal");
+		
+		while (totalLock){
+			//wait for total update
+		}
+		totalLock = true;
+		
+		return total;
+		
 	}
-
+	
+	
 	public void setSuccID(int succID) {
 		this.succID = succID;
 	}

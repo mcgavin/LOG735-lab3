@@ -63,6 +63,10 @@ public class CommunicatorBanque extends Thread {
 
 				String leMessage;
 				leMessage = (String) ois.readObject();
+				if(leMessage.equals("requeteTotal")){
+					oos.writeObject(this.banque.getTotal());
+				}
+				
 				System.out.println(leMessage);
 
 			}

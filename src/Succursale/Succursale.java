@@ -88,6 +88,10 @@ public class Succursale extends Thread {
 		
 	}
 
+	public int getBanqueTotal(){
+		
+		return tunnelBanque.getBanqueTotal();
+	}
 
 	public void setSuccursaleId(int succursaleId) {
 		this.succursaleId = succursaleId;

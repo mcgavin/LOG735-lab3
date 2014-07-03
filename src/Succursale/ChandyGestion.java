@@ -48,7 +48,10 @@ public class ChandyGestion extends Thread {
 	}
 	public void checkChandyComplete(){
 		if(chandy.isComplete()){
-			System.out.println("Victoire");
+			System.out.println("\n\n\n ****************  Victoire   ********************* \n\n\n");
+			this.succursale.getBanqueTotal();
+			
+			
 			chandy.printchandy();
 			chandyRun = false;
 		}
@@ -65,6 +68,7 @@ public class ChandyGestion extends Thread {
 	public void chandyStart(){		
 		if(!chandyRun){
 			System.out.println("demarage de chandy");
+			
 			chandy = new Chandy(succursale.getSuccursaleId(), succursale.getTotal(), succursale.getListSuccursale());
 			succursale.envoieChandyMessageToAll("M-"+succursale.getSuccursaleId());
 			chandyRun = true;
@@ -97,12 +101,15 @@ public class ChandyGestion extends Thread {
 					int sid = 0;
 					if(chandyString[0].equals("M")){
 						 sid = Integer.parseInt(chandyString[1]);
+						 
 						if(sid==succursale.getSuccursaleId()){
 							chandy.getMe().stopRecord(Integer.parseInt(chandyString[2]));
 							succursale.stopRecord(Integer.parseInt(chandyString[2]));
 							checkChandyComplete();
+							
 						}else if(mapChandyMe.containsKey(sid)){
 							stopRecord(sid,Integer.parseInt(chandyString[2]));	
+							
 						}else{
 							System.out.println("creation d'un chandyMe");
 							createMyChandySucc(sid,Integer.parseInt(chandyString[2]));
@@ -148,6 +155,11 @@ public class ChandyGestion extends Thread {
 			}
 		}
 	}
+	
+	public int getBanqueTotal(){
+		
+		return succursale.getBanqueTotal();
+	}
 
 	//add a string to be parse
 	public void addMessage(String s ){
@@ -158,7 +170,7 @@ public class ChandyGestion extends Thread {
 		
 	}
 	
-	
+
 	
 	//to sync the WriteList
 	/**
